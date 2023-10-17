@@ -1,3 +1,6 @@
+// Vinícius de Castro Duarte - 24.123.073-9
+// Renan Ivaskevicius Vieira - 24.123.069-7
+
 #include <stdio.h>
 #include "functions.h"
 
