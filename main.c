@@ -6,6 +6,7 @@
 
 int main() {
     int operacao;
+    int cnpj_apagar;
 
     while (1) {
         printf("\nBem vindo ao banco QuemPoupaTem! Qual operacao voce gostaria de realizar?\n");
@@ -32,6 +33,14 @@ int main() {
                     printf("Opção 1 confirmada!\n");
                     novo_cliente();
                     printf("Cliente Cadastrado!\n");
+                }
+                break;
+            case 2:
+                if (confirmacao(2) == 'S') {
+                    printf("Opcao 2 confirmada!\n");
+                    printf("Digite o CNPJ a ser removido: ");
+                    scanf("%d", &cnpj_apagar);
+                    deletar(&cnpj_apagar);
                 }
                 break;
             case 3:
