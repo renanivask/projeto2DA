@@ -60,20 +60,13 @@ void novo_cliente() {
     Cliente novo;
     memset(&novo, 0, sizeof(Cliente));
 
-    printf("Digite a razao social: ");
+    printf("Digite o CNPJ (APENAS NUMEROS): ");
+    scanf(" %s", novo.cnpj);
+
+    printf("Digite a razão social: ");
     scanf(" %s", novo.razao_social);
 
-    while (confirma_input() != 'S') {
-        printf("Digite a razao social: ");
-        scanf(" %s", novo.razao_social);
-    }
-
-    char* cnpj = input_cnpj();
-    while (confirma_input() != 'S') {
-        cnpj = input_cnpj();
-    }
-
-    printf("Tipo de conta (Comum/Plus): ");
+    printf("Tipo de conta [C / P]: ");
     scanf(" %c", &novo.tipo_conta);
 
     while (novo.tipo_conta != 'C' && novo.tipo_conta != 'P') {
@@ -84,12 +77,7 @@ void novo_cliente() {
     printf("Valor inicial da conta: R$");
     scanf("%lf", &novo.saldo);
 
-    while (confirma_input() != 'S') {
-        printf("Valor inicial da conta: R$");
-        scanf("%lf", &novo.saldo);
-    }
-
-    printf("Senha do usuario: ");
+    printf("Senha do usuário: ");
     scanf(" %s", novo.senha);
 
     char confirma_senha[50];
@@ -101,42 +89,34 @@ void novo_cliente() {
         scanf(" %s", confirma_senha);
     }
 
-    strcpy(clientes[numClientes].razao_social, novo.razao_social);
-    strcpy(clientes[numClientes].cnpj, cnpj);
-    clientes[numClientes].tipo_conta = novo.tipo_conta;
-    clientes[numClientes].saldo = novo.saldo;
-    strcpy(clientes[numClientes].senha, novo.senha);
+    // Abra um arquivo binário para escrita
+    FILE *file = fopen("clients.bin", "ab");
 
-    FILE *file = fopen("clients.txt", "a"); // O modo "a" indica que estamos abrindo o arquivo para adicionar (append) informações
-
-    // Verifica se o arquivo foi aberto com sucesso
+    // Verifique se o arquivo foi aberto com sucesso
     if (file != NULL) {
-        // Escreve as informações do cliente no arquivo
-        fprintf(file, "Razão Social: %s\n", clientes[numClientes].razao_social);
-        fprintf(file, "CNPJ: %s\n", clientes[numClientes].cnpj);
-        fprintf(file, "Tipo de Conta: %d\n", clientes[numClientes].tipo_conta);
-        fprintf(file, "Saldo: %.2lf\n", clientes[numClientes].saldo);
-        fprintf(file, "Senha: %s\n\n", clientes[numClientes].senha);
+        // Escreva as informações do cliente no arquivo
+        fwrite(&novo, sizeof(Cliente), 1, file);
 
-        // Fecha o arquivo
+        // Feche o arquivo
         fclose(file);
-    }
 
-    numClientes++;
+        printf("Cliente cadastrado com sucesso!\n");
+    } else {
+        printf("Erro ao abrir o arquivo binário para escrita.\n");
+    }
 }
 
 // opcao 3 - listar clientes
 void listar() {
-    FILE *file = fopen("clients.txt", "r");
+    // Abra o arquivo binário para leitura
+    FILE *file = fopen("clients.bin", "rb");
 
     if (file == NULL) {
         printf("Nenhum cliente cadastrado.\n");
     } else {
         Cliente cliente;
-        char temp[100]; // Usaremos temp para ler os rótulos (por exemplo, "Razão Social:")
 
-        while (fscanf(file, "%*[^:]: %99[^\n]\n%*[^:]: %14[^\n]\n%*[^:]: %c\n%*[^:]: %lf\n%*[^:]: %49[^\n]\n",
-                      cliente.razao_social, cliente.cnpj, &cliente.tipo_conta, &cliente.saldo, cliente.senha) == 5) {
+        while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
             printf("-=-=-=-=-=-=-=-=-=-=-=-\n");
             printf("CNPJ: %s\n", cliente.cnpj);
             printf("Razão Social: %s\n", cliente.razao_social);
