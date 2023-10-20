@@ -23,14 +23,14 @@ int main() {
         scanf("%d", &operacao);
 
         if (operacao < 1 || operacao > 9) {
-            printf("Digite um número entre 1 e 9! Tente novamente!\n");
+            printf("Digite um numero entre 1 e 9! Tente novamente!\n");
             continue;
         }
 
         switch (operacao) {
             case 1:
                 if (confirmacao(1) == 'S') {
-                    printf("Opção 1 confirmada!\n");
+                    printf("Opcao 1 confirmada!\n");
                     novo_cliente();
                     printf("Cliente Cadastrado!\n");
                 }
@@ -45,12 +45,26 @@ int main() {
                 break;
             case 3:
                 if (confirmacao(3) == 'S') {
-                    printf("Opção 3 confirmada!\n");
-                    listar();
+                    printf("Opcao 3 confirmada!\n");
                     printf("Lista de clientes:\n");
+                    listar();
                 }
                 break;
-              case 9:
+            case 4:
+                if (confirmacao(4) == 'S') {
+                    printf("Opcao 4 confirmada!\n");
+                    debito();
+                    printf("Operacao de debito realizada!\n");
+                }
+                break;
+            case 8:
+                if (confirmacao(8) == 'S') {
+                    printf("Opcao 8 confirmada!\n");
+                    debito_automatico();
+                    printf("Debito automatico configurado!\n");
+                }
+                break;
+            case 9:
                 printf("Volte Sempre!\n");
                 return 0;
         }
