@@ -16,4 +16,8 @@ void deletar(const int *cnpj_a_deletar);
 
 void listar();
 
+void debito();
+
+void debito_automatico();
+
 #endif
