@@ -35,14 +35,14 @@ int main() {
                     printf("Cliente Cadastrado!\n");
                 }
                 break;
-            case 2:
-                if (confirmacao(2) == 'S') {
-                    printf("Opcao 2 confirmada!\n");
-                    printf("Digite o CNPJ a ser removido: ");
-                    scanf("%d", &cnpj_apagar);
-                    deletar(&cnpj_apagar);
-                }
-                break;
+            // case 2:
+            //     if (confirmacao(2) == 'S') {
+            //         printf("Opcao 2 confirmada!\n");
+            //         printf("Digite o CNPJ a ser removido: ");
+            //         scanf("%d", &cnpj_apagar);
+            //         deletar(&cnpj_apagar);
+            //     }
+            //     break;
             case 3:
                 if (confirmacao(3) == 'S') {
                     printf("Opcao 3 confirmada!\n");
@@ -55,6 +55,12 @@ int main() {
                     printf("Opcao 4 confirmada!\n");
                     debito();
                     printf("Operacao de debito realizada!\n");
+                }
+                break;
+            case 5:
+                if (confirmacao(5) == 'S') {
+                    printf("Opcao 5 confirmada!\n");
+                    deposito();
                 }
                 break;
             case 8:
