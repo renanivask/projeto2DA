@@ -18,7 +18,7 @@ void listar();
 
 void debito();
 
-void debito();
+void deposito();
 
 void debito_automatico();
 
