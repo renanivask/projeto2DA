@@ -18,6 +18,8 @@ void listar();
 
 void debito();
 
+void debito();
+
 void debito_automatico();
 
 #endif
