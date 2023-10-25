@@ -12,6 +12,8 @@ char* input_cnpj();
 
 void novo_cliente();
 
+void apagar_cnpj();
+
 void deletar(const int *cnpj_a_deletar);
 
 void listar();
