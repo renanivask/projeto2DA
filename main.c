@@ -39,7 +39,6 @@ int main() {
                 if (confirmacao(2) == 'S') {
                     printf("Opcao 2 confirmada!\n");
                     apagar_cnpj();
-                    printf("Conta apagada com sucesso!\n");
                 }
                 break;
             case 3:
@@ -53,7 +52,6 @@ int main() {
                 if (confirmacao(4) == 'S') {
                     printf("Opcao 4 confirmada!\n");
                     debito();
-                    printf("Operacao de debito realizada!\n");
                 }
                 break;
             case 5:
@@ -62,11 +60,16 @@ int main() {
                     deposito();
                 }
                 break;
+            case 7:
+                if (confirmacao(7) == 'S') {
+                  printf("Opcao 7 confirmada!\n");
+                  transferencia_contas(123, 10, 1000);
+                }
+                break;
             case 8:
                 if (confirmacao(8) == 'S') {
                     printf("Opcao 8 confirmada!\n");
                     debito_automatico();
-                    printf("Debito automatico configurado!\n");
                 }
                 break;
             case 9:
