@@ -12,6 +12,8 @@ char* input_cnpj();
 
 void novo_cliente();
 
+void apaga_cliente();
+
 void apagar_cnpj();
 
 void listar();
@@ -19,6 +21,8 @@ void listar();
 void debito();
 
 void deposito();
+
+void transferencia_contas();
 
 void debito_automatico();
 
