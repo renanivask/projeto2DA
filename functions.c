@@ -106,12 +106,11 @@ void novo_cliente() {
     }
 }
 
-// Operacao 2: Apaga Cliente
-void apagar_cpf() {
+void apagar_cnpj() {
     char cpf[15];
     char senha[50];
 
-    printf("Digite seu cpf: ");
+    printf("Digite seu CNPJ: ");
     scanf(" %s", cpf);
     printf("Digite sua senha: ");
     scanf(" %s", senha);
@@ -149,10 +148,8 @@ void apagar_cpf() {
 
     // Renomeia o arquivo temporário para o arquivo original
     if (remove("clients.bin") == 0 && rename("temp_clients.bin", "clients.bin") == 0) {
-        printf("Cliente não encontrado!\n");
     }
 }
-
 // Opcao 3 - listar clientes
 void listar() {
     // Abra o arquivo binário para leitura
@@ -352,8 +349,168 @@ void deposito() {
     fclose(file);
 }
 
+// Início função 7 - Transferência de Contas
+void transferencia_contas(){
+  char cpf1[15], cpf2[15];
+  printf("Digite o cpf do cliente que proverá o dinheiro: ");
+  scanf("%s", cpf1);
+  
+  printf("Digite o cpf do cliente que receberá a quantia: ");
+  scanf( "%s", cpf2);
 
+      FILE* file = fopen("clients.bin", "rb+"); 
 
+      if (file == NULL) {
+          printf("Erro ao abrir o arquivo.\n");
+          return;
+      }
+
+      Cliente cliente;
+
+      while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+          if (strcmp(cliente.cpf, cpf1) == 0) {
+              char senha[50];
+              printf("Digite a senha da conta do cliente que proverá o dinheiro: ");
+              scanf(" %s", senha);
+
+              while (strcmp(cliente.senha, senha) != 0) {
+                  printf("Senha incorreta. Digite novamente sua senha: ");
+                  scanf(" %s", senha);
+              }
+
+              double valor_debito;
+              printf("Qual valor você deseja transferir: R$");
+              scanf("%lf", &valor_debito);
+
+              double valor = valor_debito;
+              double taxa = 0.0;
+
+              if (cliente.tipo_conta == 'C') {
+                  taxa = valor * 0.05;
+                  double novo_saldo = cliente.saldo - (valor + taxa);
+
+                  while (novo_saldo < -1000.0) {
+                      printf("Limite de R$1000.00 atingido.\n");
+                      printf("Digite um valor valido: R$");
+                      scanf("%lf", &valor_debito);
+                      valor = valor_debito;
+                      novo_saldo = cliente.saldo - (valor + taxa);
+                  }
+
+                  cliente.saldo = novo_saldo;
+              } else {
+                  taxa = valor * 0.03;
+                  double novo_saldo = cliente.saldo - (valor + taxa);
+
+                  while (novo_saldo < -5000.0) {
+                      printf("Limite de R$5000.00 atingido.\n");
+                      printf("Digite um valor valido: R$");
+                      scanf("%lf", &valor_debito);
+                      valor = valor_debito;
+                      novo_saldo = cliente.saldo - (valor + taxa);
+                  }
+
+                  cliente.saldo = novo_saldo;
+              }
+
+              time_t current_time;
+              time(&current_time);
+              struct tm* local_time = localtime(&current_time);
+
+              sprintf(cliente.transacoes[cliente.num_transacoes], "Data: %04d-%02d-%02d %02d:%02d:%02d / -R$%.2lf / Tarifa: R$%.2lf / Saldo: R$%.2lf",
+                      local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday,
+                      local_time->tm_hour, local_time->tm_min, local_time->tm_sec, valor, taxa, cliente.saldo);
+
+              // Atualize o número de transações
+              cliente.num_transacoes++;
+
+              // Volte para a posição correta no arquivo
+              fseek(file, -sizeof(Cliente), SEEK_CUR);
+
+              // Escreva o registro atualizado de volta no arquivo binário
+              fwrite(&cliente, sizeof(Cliente), 1, file);
+
+              printf("Saldo de R$%.2lf\n", cliente.saldo);
+              fclose(file);
+          }
+      }
+
+      FILE* file1 = fopen("clients.bin", "rb+");
+    
+      Cliente cliente1;
+  
+          while (fread(&cliente1, sizeof(Cliente), 1, file1) == 1) {
+              if (strcmp(cliente1.cpf, cpf2) == 0) {
+                  char senha[50];
+                  printf("Digite sua senha: ");
+                  scanf(" %s", senha);
+
+                  while (strcmp(cliente1.senha, senha) != 0) {
+                      printf("Senha incorreta. Digite novamente sua senha: ");
+                      scanf(" %s", senha);
+                  }
+
+                  double valor_credito;
+                  printf("Qual valor você deseja creditar: R$");
+                  scanf("%lf", &valor_credito);
+
+                  double valor = valor_credito;
+                  double taxa = 0.0;
+
+                  if (cliente1.tipo_conta == 'C') {
+                      double novo_saldo = cliente1.saldo + (valor + taxa);
+
+                      while (novo_saldo < -1000.0) {
+                          printf("Limite de R$1000.00 atingido.\n");
+                          printf("Digite um valor valido: R$");
+                          scanf("%lf", &valor_credito);
+                          valor = valor_credito;
+                          novo_saldo = cliente1.saldo - (valor + taxa);
+                      }
+
+                      cliente1.saldo = novo_saldo;
+                  } else {
+                      double novo_saldo = cliente1.saldo + (valor + taxa);
+
+                      while (novo_saldo < -5000.0) {
+                          printf("Limite de R$5000.00 atingido.\n");
+                          printf("Digite um valor valido: R$");
+                          scanf("%lf", &valor_credito);
+                          valor = valor_credito;
+                          novo_saldo = cliente1.saldo + (valor + taxa);
+                      }
+
+                      cliente1.saldo = novo_saldo;
+                  }
+
+                  // Atualize as transações do cliente
+                  time_t current_time;
+                  time(&current_time);
+                  struct tm* local_time = localtime(&current_time);
+
+                  sprintf(cliente1.transacoes[cliente.num_transacoes], "Data: %04d-%02d-%02d %02d:%02d:%02d / +R$%.2lf / Tarifa: R$%.2lf / Saldo: R$%.2lf",
+                          local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday,
+                          local_time->tm_hour, local_time->tm_min, local_time->tm_sec, valor, taxa, cliente1.saldo);
+
+                  // Atualize o número de transações
+                  cliente1.num_transacoes++;
+
+                  // Volte para a posição correta no arquivo
+                  fseek(file1, -sizeof(Cliente), SEEK_CUR);
+
+                  // Escreva o registro atualizado de volta no arquivo binário
+                  fwrite(&cliente1, sizeof(Cliente), 1, file1);
+
+                  printf("Saldo de R$%.2lf\n", cliente1.saldo);
+                  fclose(file1);
+                  return;
+              }
+          }
+
+          printf("Cliente nao encontrado!\n");
+          fclose(file1);
+          return;
+      }
 
 // Operacao 8: Débito Automático
 void debito_automatico() {
