@@ -35,14 +35,13 @@ int main() {
                     printf("Cliente Cadastrado!\n");
                 }
                 break;
-            // case 2:
-            //     if (confirmacao(2) == 'S') {
-            //         printf("Opcao 2 confirmada!\n");
-            //         printf("Digite o CNPJ a ser removido: ");
-            //         scanf("%d", &cnpj_apagar);
-            //         deletar(&cnpj_apagar);
-            //     }
-            //     break;
+            case 2:
+                if (confirmacao(2) == 'S') {
+                    printf("Opcao 2 confirmada!\n");
+                    apagar_cnpj();
+                    printf("Conta apagada com sucesso!\n");
+                }
+                break;
             case 3:
                 if (confirmacao(3) == 'S') {
                     printf("Opcao 3 confirmada!\n");
