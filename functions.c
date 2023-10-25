@@ -106,6 +106,53 @@ void novo_cliente() {
     }
 }
 
+// Operacao 2: Apaga Cliente
+void apagar_cnpj() {
+    char cnpj[15];
+    char senha[50];
+
+    printf("Digite seu CNPJ: ");
+    scanf(" %s", cnpj);
+    printf("Digite sua senha: ");
+    scanf(" %s", senha);
+
+    FILE *file = fopen("clients.bin", "rb");
+
+    if (file == NULL) {
+        printf("Nenhum cliente cadastrado.\n");
+        return;
+    }
+
+    FILE *tempFile = fopen("temp_clients.bin", "wb");
+
+    if (tempFile == NULL) {
+        printf("Erro ao abrir o arquivo temporário.\n");
+        fclose(file);
+        return;
+    }
+
+    Cliente cliente;
+
+    while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+        // Verifica se o CNPJ e a senha correspondem
+        if (strcmp(cliente.cnpj, cnpj) == 0 && strcmp(cliente.senha, senha) == 0) {
+            printf("Cliente apagado com sucesso!\n");
+            continue; // Não escreve este cliente no arquivo temporário
+        }
+
+        // Escreve os outros clientes no arquivo temporário
+        fwrite(&cliente, sizeof(Cliente), 1, tempFile);
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    // Renomeia o arquivo temporário para o arquivo original
+    if (remove("clients.bin") == 0 && rename("temp_clients.bin", "clients.bin") == 0) {
+        printf("Cliente não encontrado!\n");
+    }
+}
+
 // Opcao 3 - listar clientes
 void listar() {
     // Abra o arquivo binário para leitura
