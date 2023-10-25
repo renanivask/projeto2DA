@@ -10,7 +10,7 @@
 
 typedef struct {
     char razao_social[100];
-    char cnpj[15];
+    char cpf[15];
     char tipo_conta;
     double saldo;
     char senha[50];
@@ -37,22 +37,22 @@ char confirma_input() {
     return toupper(confirma);
 }
 
-// Recolhe o cnpj do usuario
-char* input_cnpj() {
-    static char cnpj[15];
-    printf("Digite seu CNPJ: ");
-    scanf(" %s", cnpj);
+// Recolhe o cpf do usuario
+char* input_cpf() {
+    static char cpf[15];
+    printf("Digite seu cpf: ");
+    scanf(" %s", cpf);
 
-    // Remover pontuações do CNPJ
+    // Remover pontuações do cpf
     int i, j = 0;
-    for (i = 0; cnpj[i]; i++) {
-        if (isdigit(cnpj[i])) {
-            cnpj[j++] = cnpj[i];
+    for (i = 0; cpf[i]; i++) {
+        if (isdigit(cpf[i])) {
+            cpf[j++] = cpf[i];
         }
     }
-    cnpj[j] = '\0';
+    cpf[j] = '\0';
 
-    return cnpj;
+    return cpf;
 }
 
 // Opcao 1 - novo cliente
@@ -60,8 +60,8 @@ void novo_cliente() {
     Cliente novo;
     memset(&novo, 0, sizeof(Cliente));
 
-    printf("Digite o CNPJ (APENAS NUMEROS): ");
-    scanf(" %s", novo.cnpj);
+    printf("Digite o cpf (APENAS NUMEROS): ");
+    scanf(" %s", novo.cpf);
 
     printf("Digite a razão social: ");
     scanf(" %s", novo.razao_social);
@@ -107,12 +107,12 @@ void novo_cliente() {
 }
 
 // Operacao 2: Apaga Cliente
-void apagar_cnpj() {
-    char cnpj[15];
+void apagar_cpf() {
+    char cpf[15];
     char senha[50];
 
-    printf("Digite seu CNPJ: ");
-    scanf(" %s", cnpj);
+    printf("Digite seu cpf: ");
+    scanf(" %s", cpf);
     printf("Digite sua senha: ");
     scanf(" %s", senha);
 
@@ -134,8 +134,8 @@ void apagar_cnpj() {
     Cliente cliente;
 
     while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
-        // Verifica se o CNPJ e a senha correspondem
-        if (strcmp(cliente.cnpj, cnpj) == 0 && strcmp(cliente.senha, senha) == 0) {
+        // Verifica se o cpf e a senha correspondem
+        if (strcmp(cliente.cpf, cpf) == 0 && strcmp(cliente.senha, senha) == 0) {
             printf("Cliente apagado com sucesso!\n");
             continue; // Não escreve este cliente no arquivo temporário
         }
@@ -165,7 +165,7 @@ void listar() {
 
         while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
             printf("-=-=-=-=-=-=-=-=-=-=-=-\n");
-            printf("CNPJ: %s\n", cliente.cnpj);
+            printf("cpf: %s\n", cliente.cpf);
             printf("Razão Social: %s\n", cliente.razao_social);
             printf("Tipo de conta: %c\n", cliente.tipo_conta);
             printf("Valor em conta: R$%.2lf\n", cliente.saldo);
@@ -179,9 +179,9 @@ void listar() {
 
 // Operacao 4: Debito
 void debito() {
-    char cnpj[15];
-    printf("Digite o CNPJ do cliente: ");
-    scanf("%s", cnpj);
+    char cpf[15];
+    printf("Digite o cpf do cliente: ");
+    scanf("%s", cpf);
 
     FILE* file = fopen("clients.bin", "rb+"); // Abra o arquivo em modo de leitura e escrita binária.
 
@@ -193,7 +193,7 @@ void debito() {
     Cliente cliente;
 
     while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
-        if (strcmp(cliente.cnpj, cnpj) == 0) {
+        if (strcmp(cliente.cpf, cpf) == 0) {
             char senha[50];
             printf("Digite sua senha: ");
             scanf(" %s", senha);
@@ -267,9 +267,9 @@ void debito() {
 }
 
 void deposito() {
-    char cnpj[15];
-    printf("Digite o CNPJ do cliente: ");
-    scanf("%s", cnpj);
+    char cpf[15];
+    printf("Digite o cpf do cliente: ");
+    scanf("%s", cpf);
 
     FILE* file = fopen("clients.bin", "rb+"); // Abra o arquivo em modo de leitura e escrita binária.
 
@@ -281,7 +281,7 @@ void deposito() {
     Cliente cliente;
 
     while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
-        if (strcmp(cliente.cnpj, cnpj) == 0) {
+        if (strcmp(cliente.cpf, cpf) == 0) {
             char senha[50];
             printf("Digite sua senha: ");
             scanf(" %s", senha);
@@ -357,9 +357,9 @@ void deposito() {
 
 // Operacao 8: Débito Automático
 void debito_automatico() {
-    char cnpj[15];
-    printf("Digite o CNPJ do cliente: ");
-    scanf("%s", cnpj);
+    char cpf[15];
+    printf("Digite o cpf do cliente: ");
+    scanf("%s", cpf);
 
     FILE* file = fopen("clients.bin", "rb+"); // Abra o arquivo em modo de leitura e escrita binária.
 
@@ -371,7 +371,7 @@ void debito_automatico() {
     Cliente cliente;
 
     while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
-        if (strcmp(cliente.cnpj, cnpj) == 0) {
+        if (strcmp(cliente.cpf, cpf) == 0) {
             char senha[50];
             printf("Digite sua senha: ");
             scanf(" %s", senha);
