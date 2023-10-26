@@ -8,15 +8,6 @@
 #include <time.h>
 #include "functions.h"
 
-typedef struct {
-    char razao_social[100];
-    char cpf[15];
-    char tipo_conta;
-    double saldo;
-    char senha[50];
-    char transacoes[1000][100];
-    int num_transacoes;
-} Cliente;
 
 Cliente clientes[100];
 int numClientes = 0;
