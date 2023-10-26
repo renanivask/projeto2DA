@@ -43,7 +43,7 @@ char* input_cpf() {
     printf("Digite seu cpf: ");
     scanf(" %s", cpf);
 
-    // Remover pontuações do cpf
+    // Remove pontuações do cpf
     int i, j = 0;
     for (i = 0; cpf[i]; i++) {
         if (isdigit(cpf[i])) {
@@ -89,15 +89,15 @@ void novo_cliente() {
         scanf(" %s", confirma_senha);
     }
 
-    // Abra um arquivo binário para escrita
+    // Abre um arquivo binário para escrita
     FILE *file = fopen("clients.bin", "ab");
 
-    // Verifique se o arquivo foi aberto com sucesso
+    // Verifica se o arquivo foi aberto com sucesso
     if (file != NULL) {
         // Escreva as informações do cliente no arquivo
         fwrite(&novo, sizeof(Cliente), 1, file);
 
-        // Feche o arquivo
+        // Fecha o arquivo
         fclose(file);
 
         printf("Cliente cadastrado com sucesso!\n");
@@ -106,11 +106,11 @@ void novo_cliente() {
     }
 }
 
-void apagar_cnpj() {
+void apagar_cpf() {
     char cpf[15];
     char senha[50];
 
-    printf("Digite seu CNPJ: ");
+    printf("Digite seu cpf: ");
     scanf(" %s", cpf);
     printf("Digite sua senha: ");
     scanf(" %s", senha);
@@ -150,9 +150,10 @@ void apagar_cnpj() {
     if (remove("clients.bin") == 0 && rename("temp_clients.bin", "clients.bin") == 0) {
     }
 }
+
 // Opcao 3 - listar clientes
 void listar() {
-    // Abra o arquivo binário para leitura
+    // Abre o arquivo binário para leitura
     FILE *file = fopen("clients.bin", "rb");
 
     if (file == NULL) {
@@ -180,7 +181,7 @@ void debito() {
     printf("Digite o cpf do cliente: ");
     scanf("%s", cpf);
 
-    FILE* file = fopen("clients.bin", "rb+"); // Abra o arquivo em modo de leitura e escrita binária.
+    FILE* file = fopen("clients.bin", "rb+"); // Abre o arquivo em modo de leitura e escrita binária.
 
     if (file == NULL) {
         printf("Erro ao abrir o arquivo.\n");
@@ -235,7 +236,7 @@ void debito() {
                 cliente.saldo = novo_saldo;
             }
 
-            // Atualize as transações do cliente
+            // Atualiza as transações do cliente
             time_t current_time;
             time(&current_time);
             struct tm* local_time = localtime(&current_time);
@@ -244,13 +245,13 @@ void debito() {
                     local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday,
                     local_time->tm_hour, local_time->tm_min, local_time->tm_sec, valor, taxa, cliente.saldo);
 
-            // Atualize o número de transações
+            // Atualiza o número de transações
             cliente.num_transacoes++;
 
-            // Volte para a posição correta no arquivo
+            // Volta para a posição correta no arquivo
             fseek(file, -sizeof(Cliente), SEEK_CUR);
 
-            // Escreva o registro atualizado de volta no arquivo binário
+            // Escreve o registro atualizado de volta no arquivo binário
             fwrite(&cliente, sizeof(Cliente), 1, file);
 
             printf("Saldo de R$%.2lf\n", cliente.saldo);
@@ -263,12 +264,13 @@ void debito() {
     fclose(file);
 }
 
+// Operacao 5: Depósito
 void deposito() {
     char cpf[15];
     printf("Digite o cpf do cliente: ");
     scanf("%s", cpf);
 
-    FILE* file = fopen("clients.bin", "rb+"); // Abra o arquivo em modo de leitura e escrita binária.
+    FILE* file = fopen("clients.bin", "rb+"); // Abre o arquivo em modo de leitura e escrita binária.
 
     if (file == NULL) {
         printf("Erro ao abrir o arquivo.\n");
@@ -321,7 +323,7 @@ void deposito() {
                 cliente.saldo = novo_saldo;
             }
 
-            // Atualize as transações do cliente
+            // Atualiza as transações do cliente
             time_t current_time;
             time(&current_time);
             struct tm* local_time = localtime(&current_time);
@@ -330,13 +332,13 @@ void deposito() {
                     local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday,
                     local_time->tm_hour, local_time->tm_min, local_time->tm_sec, valor, taxa, cliente.saldo);
 
-            // Atualize o número de transações
+            // Atualiza o número de transações
             cliente.num_transacoes++;
 
-            // Volte para a posição correta no arquivo
+            // Volta para a posição correta no arquivo
             fseek(file, -sizeof(Cliente), SEEK_CUR);
 
-            // Escreva o registro atualizado de volta no arquivo binário
+            // Escreve o registro atualizado de volta no arquivo binário
             fwrite(&cliente, sizeof(Cliente), 1, file);
 
             printf("Saldo de R$%.2lf\n", cliente.saldo);
@@ -347,6 +349,58 @@ void deposito() {
 
     printf("Cliente nao encontrado!\n");
     fclose(file);
+}
+
+// Operacao 6: Extrato
+void extrato(const char* cpf) {
+    // Abre o arquivo binário para leitura
+    FILE* file = fopen("clients.bin", "rb");
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo binário.\n");
+        return;
+    }
+
+    // Estrutura temporária para ler os clientes do arquivo
+    Cliente cliente;
+
+    // Localiza o cliente no arquivo binário
+    int encontrado = 0;
+
+    while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+        if (strcmp(cliente.cpf, cpf) == 0) {
+            encontrado = 1;
+            break;
+        }
+    }
+
+    fclose(file);
+
+    if (!encontrado) {
+        printf("Cliente não encontrado.\n");
+        return;
+    }
+
+    // Cria um arquivo de texto para o extrato
+    char nome_arquivo[50];
+    snprintf(nome_arquivo, sizeof(nome_arquivo), "extrato_%s.txt", cpf);
+    FILE* extrato_file = fopen(nome_arquivo, "w");
+
+    if (extrato_file == NULL) {
+        printf("Erro ao criar o arquivo de extrato.\n");
+        return;
+    }
+
+    // Escreve o extrato no arquivo de texto
+    fprintf(extrato_file, "Extrato para o cliente cpf: %s\n", cpf);
+
+    // Adiciona o histórico de operações do cliente no extrato
+    for (int i = 0; i < cliente.num_transacoes; i++) {
+        fprintf(extrato_file, "%s\n", cliente.transacoes[i]);
+    }
+
+    fclose(extrato_file);
+    printf("Extrato gerado com sucesso: %s\n", nome_arquivo);
 }
 
 // Início função 7 - Transferência de Contas
@@ -421,13 +475,13 @@ void transferencia_contas(){
                       local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday,
                       local_time->tm_hour, local_time->tm_min, local_time->tm_sec, valor, taxa, cliente.saldo);
 
-              // Atualize o número de transações
+              // Atualiza o número de transações
               cliente.num_transacoes++;
 
-              // Volte para a posição correta no arquivo
+              // Volta para a posição correta no arquivo
               fseek(file, -sizeof(Cliente), SEEK_CUR);
 
-              // Escreva o registro atualizado de volta no arquivo binário
+              // Escreve o registro atualizado de volta no arquivo binário
               fwrite(&cliente, sizeof(Cliente), 1, file);
 
               printf("Saldo de R$%.2lf\n", cliente.saldo);
@@ -483,7 +537,7 @@ void transferencia_contas(){
                       cliente1.saldo = novo_saldo;
                   }
 
-                  // Atualize as transações do cliente
+                  // Atualiza as transações do cliente
                   time_t current_time;
                   time(&current_time);
                   struct tm* local_time = localtime(&current_time);
@@ -492,13 +546,13 @@ void transferencia_contas(){
                           local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday,
                           local_time->tm_hour, local_time->tm_min, local_time->tm_sec, valor, taxa, cliente1.saldo);
 
-                  // Atualize o número de transações
+                  // Atualiza o número de transações
                   cliente1.num_transacoes++;
 
-                  // Volte para a posição correta no arquivo
+                  // Volta para a posição correta no arquivo
                   fseek(file1, -sizeof(Cliente), SEEK_CUR);
 
-                  // Escreva o registro atualizado de volta no arquivo binário
+                  // Escreve o registro atualizado de volta no arquivo binário
                   fwrite(&cliente1, sizeof(Cliente), 1, file1);
 
                   printf("Saldo de R$%.2lf\n", cliente1.saldo);
@@ -518,7 +572,7 @@ void debito_automatico() {
     printf("Digite o cpf do cliente: ");
     scanf("%s", cpf);
 
-    FILE* file = fopen("clients.bin", "rb+"); // Abra o arquivo em modo de leitura e escrita binária.
+    FILE* file = fopen("clients.bin", "rb+"); // Abre o arquivo em modo de leitura e escrita binária.
 
     if (file == NULL) {
         printf("Erro ao abrir o arquivo.\n");
@@ -563,22 +617,22 @@ void debito_automatico() {
                 novo_saldo = cliente.saldo - valor;
             }
 
-            // Obtenha a data e hora atual
+            // Obtêm a data e hora atual
             time_t current_time;
             time(&current_time);
             struct tm* local_time = localtime(&current_time);
 
-            // Agende o débito automático
+            // Agenda o débito automático
             sprintf(cliente.transacoes[cliente.num_transacoes], "Debito automatico agendado para o dia %d/%02d/%04d / -R$%.2lf / Tarifa: R$0.00 / Saldo: R$%.2lf",
                     dia, local_time->tm_mon + 1, local_time->tm_year + 1900, valor, novo_saldo);
 
             cliente.num_transacoes++;
             cliente.saldo = novo_saldo;
 
-            // Volte para a posição correta no arquivo
+            // Volta para a posição correta no arquivo
             fseek(file, -sizeof(Cliente), SEEK_CUR);
 
-            // Escreva o registro atualizado de volta no arquivo binário
+            // Escreve o registro atualizado de volta no arquivo binário
             fwrite(&cliente, sizeof(Cliente), 1, file);
 
             printf("Debito automatico agendado com sucesso!\n");
