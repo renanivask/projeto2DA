@@ -16,8 +16,6 @@ typedef struct {
 
 char confirmacao(int operacao);
 
-char confirma_input();
-
 char* input_cnpj();
 
 void novo_cliente();
