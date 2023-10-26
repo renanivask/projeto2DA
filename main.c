@@ -62,7 +62,7 @@ int main() {
             case 6:
                 if (confirmacao(6) == 'S') {
                     printf("Opção 6 confirmada!\n");
-                    extrato(input_cnpj());
+                    extrato(input_cpf());
                     printf("Extrato bancário:\n");
                 }
                 break;
