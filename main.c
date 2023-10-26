@@ -60,6 +60,13 @@ int main() {
                     deposito();
                 }
                 break;
+            case 6:
+                if (confirmacao(6) == 'S') {
+                    printf("Opção 6 confirmada!\n");
+                    extrato(input_cnpj());
+                    printf("Extrato bancário:\n");
+                }
+                break;
             case 7:
                 if (confirmacao(7) == 'S') {
                   printf("Opcao 7 confirmada!\n");
