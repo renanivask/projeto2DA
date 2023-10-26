@@ -6,7 +6,6 @@
 
 int main() {
     int operacao;
-    int cnpj_apagar;
 
     while (1) {
         printf("\nBem vindo ao banco QuemPoupaTem! Qual operacao voce gostaria de realizar?\n");
