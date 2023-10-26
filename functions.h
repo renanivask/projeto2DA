@@ -16,13 +16,13 @@ typedef struct {
 
 char confirmacao(int operacao);
 
-char* input_cnpj();
+char* input_cpf();
 
 void novo_cliente();
 
 void apaga_cliente();
 
-void apagar_cnpj();
+void apagar_cpf();
 
 void listar();
 
@@ -30,7 +30,7 @@ void debito();
 
 void deposito();
 
-void extrato(const char* cnpj);
+void extrato(const char* cpf);
 
 void transferencia_contas();
 
