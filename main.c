@@ -37,7 +37,7 @@ int main() {
             case 2:
                 if (confirmacao(2) == 'S') {
                     printf("Opcao 2 confirmada!\n");
-                    apagar_cnpj();
+                    apagar_cpf();
                 }
                 break;
             case 3:
