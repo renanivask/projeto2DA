@@ -20,14 +20,6 @@ char confirmacao(int operacao) {
     return toupper(confirmacao);
 }
 
-// Confirma o que foi selecionado
-char confirma_input() {
-    char confirma;
-    printf("Confirma? [S/N] ");
-    scanf(" %c", &confirma);
-    return toupper(confirma);
-}
-
 // Recolhe o cpf do usuario
 char* input_cpf() {
     static char cpf[15];
