@@ -31,7 +31,6 @@ int main() {
                 if (confirmacao(1) == 'S') {
                     printf("Opcao 1 confirmada!\n");
                     novo_cliente();
-                    printf("Cliente Cadastrado!\n");
                 }
                 break;
             case 2:
@@ -66,32 +65,26 @@ int main() {
                     printf("Digite o CPF do cliente [APENAS ALGARISMOS NUMÉRICOS]: ");
                     scanf("%s", cpf);
                     extrato(cpf);
-                    printf("Extrato bancário:\n");
                 }
                 break;
             case 7:
                 if (confirmacao(7) == 'S') {
-                    printf("Opção 7 confirmada!\n");
+                    printf("Opcao 7 confirmada!\n");
                     FILE* arquivo = fopen("clients.bin", "rb+");
 
-                    if (arquivo == NULL) {
-                        printf("Erro ao abrir o arquivo.\n");
-                        return 1;
-                    }
-
-                    char cnpj_origem[15], cnpj_destino[15];
+                    char cpf_origem[15], cpf_destino[15];
                     double valor;
 
-                    printf("Digite o CNPJ de origem: ");
-                    scanf("%s", cnpj_origem);
+                    printf("Digite o cpf de origem: ");
+                    scanf("%s", cpf_origem);
 
-                    printf("Digite o CNPJ de destino: ");
-                    scanf("%s", cnpj_destino);
+                    printf("Digite o cpf de destino: ");
+                    scanf("%s", cpf_destino);
 
                     printf("Digite o valor a ser transferido: R$");
                     scanf("%lf", &valor);
 
-                    realizarTransferencia(arquivo, cnpj_origem, cnpj_destino, valor);
+                    realizarTransferencia(arquivo, cpf_origem, cpf_destino, valor);
 
                     fclose(arquivo);
                 }
