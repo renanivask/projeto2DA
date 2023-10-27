@@ -32,7 +32,7 @@ void deposito();
 
 void extrato(const char* cpf);
 
-void transferencia_contas();
+void realizarTransferencia(FILE* arquivo, const char* cnpj_origem, const char* cnpj_destino, double valor);
 
 void debito_automatico();
 
