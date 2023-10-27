@@ -15,7 +15,7 @@ int numClientes = 0;
 // Confirma se a opcao desejada esta de acordo
 char confirmacao(int operacao) {
     char confirmacao;
-    printf("\033[1;33m Voce escolheu a opcao %d, confirma? [S/N] ", operacao);
+    printf("\033[1;32m Voce escolheu a opcao %d, confirma? [S/N] ", operacao);
     scanf(" %c", &confirmacao);
     return toupper(confirmacao);
 }
