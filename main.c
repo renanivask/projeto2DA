@@ -68,8 +68,29 @@ int main() {
                 break;
             case 7:
                 if (confirmacao(7) == 'S') {
-                  printf("Opcao 7 confirmada!\n");
-                  transferencia_contas(123, 10, 1000);
+                    printf("Opção 7 confirmada!\n");
+                    FILE* arquivo = fopen("clients.bin", "rb+");
+
+                    if (arquivo == NULL) {
+                        printf("Erro ao abrir o arquivo.\n");
+                        return 1;
+                    }
+
+                    char cnpj_origem[15], cnpj_destino[15];
+                    double valor;
+
+                    printf("Digite o CNPJ de origem: ");
+                    scanf("%s", cnpj_origem);
+
+                    printf("Digite o CNPJ de destino: ");
+                    scanf("%s", cnpj_destino);
+
+                    printf("Digite o valor a ser transferido: R$");
+                    scanf("%lf", &valor);
+
+                    realizarTransferencia(arquivo, cnpj_origem, cnpj_destino, valor);
+
+                    fclose(arquivo);
                 }
                 break;
             case 8:
