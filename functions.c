@@ -20,24 +20,6 @@ char confirmacao(int operacao) {
     return toupper(confirmacao);
 }
 
-// Recolhe o cpf do usuario
-char* input_cpf() {
-    static char cpf[15];
-    printf("Digite seu cpf: ");
-    scanf(" %s", cpf);
-
-    // Remove pontuações do cpf
-    int i, j = 0;
-    for (i = 0; cpf[i]; i++) {
-        if (isdigit(cpf[i])) {
-            cpf[j++] = cpf[i];
-        }
-    }
-    cpf[j] = '\0';
-
-    return cpf;
-}
-
 // Opcao 1 - novo cliente
 void novo_cliente() {
     Cliente novo;
