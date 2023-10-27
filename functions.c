@@ -28,9 +28,6 @@ void novo_cliente() {
     printf("Digite o cpf (APENAS NUMEROS): ");
     scanf(" %s", novo.cpf);
 
-    printf("Digite a razão social: ");
-    scanf(" %s", novo.razao_social);
-
     printf("Tipo de conta [C / P]: ");
     scanf(" %c", &novo.tipo_conta);
 
@@ -129,7 +126,6 @@ void listar() {
         while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
             printf("-=-=-=-=-=-=-=-=-=-=-=-\n");
             printf("cpf: %s\n", cliente.cpf);
-            printf("Razão Social: %s\n", cliente.razao_social);
             printf("Tipo de conta: %c\n", cliente.tipo_conta);
             printf("Valor em conta: R$%.2lf\n", cliente.saldo);
             printf("Senha: %s\n", cliente.senha);
@@ -378,11 +374,11 @@ void extrato(const char* cpf) {
 }
 
 // Operacao 7: Transferência
-void realizarTransferencia(FILE* arquivo, const char* cnpj_origem, const char* cnpj_destino, double valor) {
+void realizarTransferencia(FILE* arquivo, const char* cpf_origem, const char* cpf_destino, double valor) {
     Cliente cliente;
 
     while (fread(&cliente, sizeof(Cliente), 1, arquivo) == 1) {
-        if (strcmp(cliente.cnpj, cnpj_origem) == 0) {
+        if (strcmp(cliente.cpf, cpf_origem) == 0) {
             // Verifica a senha da conta de origem
             char senha[50];
             printf("Digite sua senha: ");
@@ -424,7 +420,7 @@ void realizarTransferencia(FILE* arquivo, const char* cnpj_origem, const char* c
             Cliente cliente_destino;
 
             while (fread(&cliente_destino, sizeof(Cliente), 1, arquivo_destino) == 1) {
-                if (strcmp(cliente_destino.cnpj, cnpj_destino) == 0) {
+                if (strcmp(cliente_destino.cpf, cpf_destino) == 0) {
                     // Atualiza o saldo da conta de destino
                     cliente_destino.saldo += valor;
                     fseek(arquivo_destino, -sizeof(Cliente), SEEK_CUR);
