@@ -62,7 +62,10 @@ int main() {
             case 6:
                 if (confirmacao(6) == 'S') {
                     printf("Opção 6 confirmada!\n");
-                    extrato(input_cpf());
+                    char cpf[11];
+                    printf("Digite o CPF do cliente [APENAS ALGARISMOS NUMÉRICOS]: ");
+                    scanf("%s", cpf);
+                    extrato(cpf);
                     printf("Extrato bancário:\n");
                 }
                 break;
