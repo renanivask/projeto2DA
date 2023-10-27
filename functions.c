@@ -20,6 +20,32 @@ char confirmacao(int operacao) {
     return toupper(confirmacao);
 }
 
+int confirma_abertura_arquivo(char arquivo[30]){
+  FILE *file = fopen(arquivo, "r");
+
+  if(file != NULL){
+    return 1;
+  }else{
+    return 0;
+  }
+};
+
+int arquivo_escrito(char arquivo[30]){
+  FILE *file = fopen(arquivo, "r");
+
+  fseek(file, 0, SEEK_END);
+
+  long tamanho = ftell(file);
+
+  if(tamanho > 0){
+    fclose(file);
+    return 1;
+  }else{
+    fclose(file);
+    return 0;
+  }
+};
+
 // Opcao 1 - novo cliente
 void novo_cliente() {
     Cliente novo;
@@ -55,7 +81,7 @@ void novo_cliente() {
     FILE *file = fopen("clients.bin", "ab");
 
     // Verifica se o arquivo foi aberto com sucesso
-    if (file != NULL) {
+    if (confirma_abertura_arquivo("clients.bin") == 1) {
         // Escreva as informações do cliente no arquivo
         fwrite(&novo, sizeof(Cliente), 1, file);
 
@@ -63,8 +89,6 @@ void novo_cliente() {
         fclose(file);
 
         printf("Cliente cadastrado com sucesso!\n");
-    } else {
-        printf("Erro ao abrir o arquivo binário para escrita.\n");
     }
 }
 
@@ -79,15 +103,15 @@ void apagar_cpf() {
 
     FILE *file = fopen("clients.bin", "rb");
 
-    if (file == NULL) {
-        printf("Nenhum cliente cadastrado.\n");
+    if (arquivo_escrito("clients.bin") == 0) {
+        printf("Não existem clientes cadastrados.\n");
         return;
     }
 
     FILE *tempFile = fopen("temp_clients.bin", "wb");
 
-    if (tempFile == NULL) {
-        printf("Erro ao abrir o arquivo temporário.\n");
+    if (confirma_abertura_arquivo("temp_clients.bin") == 0) {
+        printf("ERRO!\n");
         fclose(file);
         return;
     }
@@ -118,14 +142,14 @@ void listar() {
     // Abre o arquivo binário para leitura
     FILE *file = fopen("clients.bin", "rb");
 
-    if (file == NULL) {
-        printf("Nenhum cliente cadastrado.\n");
+    if (arquivo_escrito("clients.bin") == 0) {
+        printf("Nenhum usuario cadastrado.\n");
     } else {
         Cliente cliente;
 
         while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
             printf("-=-=-=-=-=-=-=-=-=-=-=-\n");
-            printf("cpf: %s\n", cliente.cpf);
+            printf("Cpf: %s\n", cliente.cpf);
             printf("Tipo de conta: %c\n", cliente.tipo_conta);
             printf("Valor em conta: R$%.2lf\n", cliente.saldo);
             printf("Senha: %s\n", cliente.senha);
@@ -144,8 +168,8 @@ void debito() {
 
     FILE* file = fopen("clients.bin", "rb+"); // Abre o arquivo em modo de leitura e escrita binária.
 
-    if (file == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+    if (confirma_abertura_arquivo("clients.bin") == 0) {
+        printf("ERRO!\n");
         return;
     }
 
@@ -198,13 +222,13 @@ void debito() {
             }
 
             // Atualiza as transações do cliente
-            time_t current_time;
-            time(&current_time);
-            struct tm* local_time = localtime(&current_time);
+            time_t tempoAtual;
+            time(&tempoAtual);
+            struct tm* tempo_local = localtime(&tempoAtual);
 
             sprintf(cliente.transacoes[cliente.num_transacoes], "Data: %04d-%02d-%02d %02d:%02d:%02d / -R$%.2lf / Tarifa: R$%.2lf / Saldo: R$%.2lf",
-                    local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday,
-                    local_time->tm_hour, local_time->tm_min, local_time->tm_sec, valor, taxa, cliente.saldo);
+                    tempo_local->tm_year + 1900, tempo_local->tm_mon + 1, tempo_local->tm_mday,
+                    tempo_local->tm_hour, tempo_local->tm_min, tempo_local->tm_sec, valor, taxa, cliente.saldo);
 
             // Atualiza o número de transações
             cliente.num_transacoes++;
@@ -233,8 +257,8 @@ void deposito() {
 
     FILE* file = fopen("clients.bin", "rb+"); // Abre o arquivo em modo de leitura e escrita binária.
 
-    if (file == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+    if (confirma_abertura_arquivo("clients.bin") == 0) {
+        printf("ERRO!\n");
         return;
     }
 
@@ -285,13 +309,13 @@ void deposito() {
             }
 
             // Atualiza as transações do cliente
-            time_t current_time;
-            time(&current_time);
-            struct tm* local_time = localtime(&current_time);
+            time_t tempoAtual;
+            time(&tempoAtual);
+            struct tm* tempo_local = localtime(&tempoAtual);
 
             sprintf(cliente.transacoes[cliente.num_transacoes], "Data: %04d-%02d-%02d %02d:%02d:%02d / +R$%.2lf / Tarifa: R$%.2lf / Saldo: R$%.2lf",
-                    local_time->tm_year + 1900, local_time->tm_mon + 1, local_time->tm_mday,
-                    local_time->tm_hour, local_time->tm_min, local_time->tm_sec, valor, taxa, cliente.saldo);
+                    tempo_local->tm_year + 1900, tempo_local->tm_mon + 1, tempo_local->tm_mday,
+                    tempo_local->tm_hour, tempo_local->tm_min, tempo_local->tm_sec, valor, taxa, cliente.saldo);
 
             // Atualiza o número de transações
             cliente.num_transacoes++;
@@ -307,7 +331,6 @@ void deposito() {
             return;
         }
     }
-
     printf("Cliente nao encontrado!\n");
     fclose(file);
 }
@@ -317,8 +340,8 @@ void extrato(const char* cpf) {
     // Abre o arquivo binário para leitura
     FILE* file = fopen("clients.bin", "rb");
 
-    if (file == NULL) {
-        printf("Erro ao abrir o arquivo binário.\n");
+    if (confirma_abertura_arquivo("clients.bin") == 0) {
+        printf("ERRO!\n");
         return;
     }
 
@@ -354,22 +377,17 @@ void extrato(const char* cpf) {
     // Cria um arquivo de texto para o extrato
     char nome_arquivo[50];
     snprintf(nome_arquivo, sizeof(nome_arquivo), "extrato_%s.txt", cpf);
-    FILE* extrato_file = fopen(nome_arquivo, "w");
-
-    if (extrato_file == NULL) {
-        printf("Erro ao criar o arquivo de extrato.\n");
-        return;
-    }
+    FILE* extratoExtrato = fopen(nome_arquivo, "w");
 
     // Escreve o extrato no arquivo de texto
-    fprintf(extrato_file, "Extrato para o cliente cpf: %s\n", cpf);
+    fprintf(extratoExtrato, "Extrato para o cliente cpf: %s\n", cpf);
 
     // Adiciona o histórico de operações do cliente no extrato
     for (int i = 0; i < cliente.num_transacoes; i++) {
-        fprintf(extrato_file, "%s\n", cliente.transacoes[i]);
+        fprintf(extratoExtrato, "%s\n", cliente.transacoes[i]);
     }
 
-    fclose(extrato_file);
+    fclose(extratoExtrato);
     printf("Extrato gerado com sucesso: %s\n", nome_arquivo);
 }
 
@@ -381,7 +399,7 @@ void realizarTransferencia(FILE* arquivo, const char* cpf_origem, const char* cp
         if (strcmp(cliente.cpf, cpf_origem) == 0) {
             // Verifica a senha da conta de origem
             char senha[50];
-            printf("Digite sua senha: ");
+            printf("Digite a senha da conta de origem: ");
             scanf(" %s", senha);
 
             if (strcmp(cliente.senha, senha) != 0) {
@@ -412,8 +430,8 @@ void realizarTransferencia(FILE* arquivo, const char* cpf_origem, const char* cp
             // Realiza a transferência para a conta de destino
             FILE* arquivo_destino = fopen("clients.bin", "rb+");
 
-            if (arquivo_destino == NULL) {
-                printf("Erro ao abrir o arquivo de destino.\n");
+            if (confirma_abertura_arquivo("clients.bin") == 0) {
+                printf("ERRO!\n");
                 return;
             }
 
@@ -448,8 +466,8 @@ void debito_automatico() {
 
     FILE* file = fopen("clients.bin", "rb+"); // Abre o arquivo em modo de leitura e escrita binária.
 
-    if (file == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+    if (confirma_abertura_arquivo("clients.bin") == 0) {
+        printf("ERRO!\n");
         return;
     }
 
@@ -492,13 +510,13 @@ void debito_automatico() {
             }
 
             // Obtêm a data e hora atual
-            time_t current_time;
-            time(&current_time);
-            struct tm* local_time = localtime(&current_time);
+            time_t tempoAtual;
+            time(&tempoAtual);
+            struct tm* tempo_local = localtime(&tempoAtual);
 
             // Agenda o débito automático
             sprintf(cliente.transacoes[cliente.num_transacoes], "Debito automatico agendado para o dia %d/%02d/%04d / -R$%.2lf / Tarifa: R$0.00 / Saldo: R$%.2lf",
-                    dia, local_time->tm_mon + 1, local_time->tm_year + 1900, valor, novo_saldo);
+                    dia, tempo_local->tm_mon + 1, tempo_local->tm_year + 1900, valor, novo_saldo);
 
             cliente.num_transacoes++;
             cliente.saldo = novo_saldo;
