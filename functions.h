@@ -5,7 +5,6 @@
 #define UNTITLED_FUNCTIONS_H
 
 typedef struct {
-    char razao_social[100];
     char cpf[15];
     char tipo_conta;
     double saldo;
