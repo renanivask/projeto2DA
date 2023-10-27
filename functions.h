@@ -15,6 +15,10 @@ typedef struct {
 
 char confirmacao(int operacao);
 
+int confirma_abertura_arquivo(char arquivo[30]);
+
+int arquivo_escrito(char arquivo[30]);
+
 void novo_cliente();
 
 void apaga_cliente();
