@@ -8,16 +8,16 @@ int main() {
     int operacao;
 
     while (1) {
-        printf("\nBem vindo ao banco QuemPoupaTem! Qual operacao voce gostaria de realizar?\n");
-        printf("[ 1 ] - Novo cliente.\n");
-        printf("[ 2 ] - Apaga cliente.\n");
-        printf("[ 3 ] - Listar clientes.\n");
-        printf("[ 4 ] - Debito.\n");
-        printf("[ 5 ] - Deposito.\n");
-        printf("[ 6 ] - Extrato.\n");
-        printf("[ 7 ] - Transferencia entre contas.\n");
-        printf("[ 8 ] - Debito automatico.\n");
-        printf("[ 9 ] - Sair.\n");
+        printf("\n\033[1;37mBem vindo ao banco QuemPoupaTem! Qual operacao voce gostaria de realizar?\n");
+        printf("\033[1;31m[ 1 ] - Novo cliente.\n");
+        printf("\033[1;33m[ 2 ] - Apaga cliente.\n");
+        printf("\033[1;32m[ 3 ] - Listar clientes.\n");
+        printf("\033[1;36m[ 4 ] - Debito.\n");
+        printf("\033[1;34m[ 5 ] - Deposito.\n");
+        printf("\033[1;35m[ 6 ] - Extrato.\n");
+        printf("\033[1;31m[ 7 ] - Transferencia entre contas.\n");
+        printf("\033[1;33m[ 8 ] - Debito automatico.\n");
+        printf("\033[1;32m[ 9 ] - Sair.\n");
 
         scanf("%d", &operacao);
 
