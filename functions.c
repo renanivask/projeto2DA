@@ -357,6 +357,15 @@ void extrato(const char* cpf) {
         }
     }
 
+    char senha[50];
+    printf("Digite sua senha: ");
+    scanf(" %s", senha);
+
+    while (strcmp(cliente.senha, senha) != 0) {
+        printf("Senha incorreta. Digite novamente sua senha: ");
+        scanf(" %s", senha);
+    }
+
     fclose(file);
 
     if (!encontrado) {
