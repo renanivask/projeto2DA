@@ -16,8 +16,6 @@ typedef struct {
 
 char confirmacao(int operacao);
 
-char* input_cpf();
-
 void novo_cliente();
 
 void apaga_cliente();
