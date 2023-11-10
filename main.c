@@ -37,6 +37,13 @@ int main() {
                     novo_cliente(clientes, &numClientes);
                 }
                 break;
-            
+            case 2:
+                if (confirmacao(2) == 'S') {
+                    printf("Opcao 2 confirmada!\n");
+                    apagar_cpf(clientes, &numClientes);
+                }
+                break;
+
     }
+  }
 }
