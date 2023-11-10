@@ -5,6 +5,10 @@
 #include "functions.h"
 
 int main() {
+
+    Cliente clientes[50];
+    int numClientes = 0;
+
     int operacao;
 
     while (1) {
@@ -30,74 +34,9 @@ int main() {
             case 1:
                 if (confirmacao(1) == 'S') {
                     printf("Opcao 1 confirmada!\n");
-                    novo_cliente();
+                    novo_cliente(clientes, &numClientes);
                 }
                 break;
-            case 2:
-                if (confirmacao(2) == 'S') {
-                    printf("Opcao 2 confirmada!\n");
-                    apagar_cpf();
-                }
-                break;
-            case 3:
-                if (confirmacao(3) == 'S') {
-                    printf("Opcao 3 confirmada!\n");
-                    printf("Lista de clientes:\n");
-                    listar();
-                }
-                break;
-            case 4:
-                if (confirmacao(4) == 'S') {
-                    printf("Opcao 4 confirmada!\n");
-                    debito();
-                }
-                break;
-            case 5:
-                if (confirmacao(5) == 'S') {
-                    printf("Opcao 5 confirmada!\n");
-                    deposito();
-                }
-                break;
-            case 6:
-                if (confirmacao(6) == 'S') {
-                    printf("Opção 6 confirmada!\n");
-                    char cpf[11];
-                    printf("Digite o CPF do cliente [APENAS ALGARISMOS NUMÉRICOS]: ");
-                    scanf("%s", cpf);
-                    extrato(cpf);
-                }
-                break;
-            case 7:
-                if (confirmacao(7) == 'S') {
-                    printf("Opcao 7 confirmada!\n");
-                    FILE* arquivo = fopen("clients.bin", "rb+");
-
-                    char cpf_origem[15], cpf_destino[15];
-                    double valor;
-
-                    printf("Digite o cpf de origem: ");
-                    scanf("%s", cpf_origem);
-
-                    printf("Digite o cpf de destino: ");
-                    scanf("%s", cpf_destino);
-
-                    printf("Digite o valor a ser transferido: R$");
-                    scanf("%lf", &valor);
-
-                    realizarTransferencia(arquivo, cpf_origem, cpf_destino, valor);
-
-                    fclose(arquivo);
-                }
-                break;
-            case 8:
-                if (confirmacao(8) == 'S') {
-                    printf("Opcao 8 confirmada!\n");
-                    debito_automatico();
-                }
-                break;
-            case 9:
-                printf("Volte Sempre!\n");
-                return 0;
-        }
+            
     }
 }
