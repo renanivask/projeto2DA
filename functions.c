@@ -96,3 +96,55 @@ void novo_cliente(Cliente* clientes, int* numClientes) {
       printf("Erro ao abrir o arquivo para escrita!\n");
   }
 }
+
+void apagar_cpf(Cliente* clientes, int* numClientes) {
+    char cpf[15];
+    char senha[50];
+
+    printf("Digite seu cpf: ");
+    scanf(" %s", cpf);
+    printf("Digite sua senha: ");
+    scanf(" %s", senha);
+
+    FILE *file = fopen("clients.bin", "rb");
+
+    if (arquivo_escrito("clients.bin") == 0) {
+        printf("Não existem clientes cadastrados.\n");
+        return;
+    }
+
+    FILE *tempFile = fopen("temp_clients.bin", "wb");
+
+    if (confirma_abertura_arquivo("temp_clients.bin") == 0) {
+        printf("ERRO!\n");
+        fclose(file);
+        return;
+    }
+
+    Cliente cliente;
+
+    int clienteRemovido = 0;  // Flag para indicar se o cliente foi removido
+
+    while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+        // Verifica se o cpf e a senha correspondem
+        if (strcmp(cliente.cpf, cpf) == 0 && strcmp(cliente.senha, senha) == 0) {
+            printf("Cliente apagado com sucesso!\n");
+            clienteRemovido = 1;
+            continue; // Não escreve este cliente no arquivo temporário
+        }
+
+        // Escreve os outros clientes no arquivo temporário
+        fwrite(&cliente, sizeof(Cliente), 1, tempFile);
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    // Renomeia o arquivo temporário para o arquivo original
+    if (remove("clients.bin") == 0 && rename("temp_clients.bin", "clients.bin") == 0) {
+        if (clienteRemovido) {
+            // Se o cliente foi removido, atualiza o número de clientes
+            (*numClientes)--;
+        }
+    }
+}
