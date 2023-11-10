@@ -23,4 +23,6 @@ void novo_cliente(Cliente* clientes, int* numClientes);
 
 void apagar_cpf(Cliente* clientes, int* numClientes);
 
+void listar(void);
+
 #endif
