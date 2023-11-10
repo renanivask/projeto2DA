@@ -43,7 +43,13 @@ int main() {
                     apagar_cpf(clientes, &numClientes);
                 }
                 break;
-
+            case 3:
+                if (confirmacao(3) == 'S') {
+                    printf("Opcao 3 confirmada!\n");
+                    printf("Lista de clientes:\n");
+                    listar();
+                }
+                break;
     }
   }
 }
