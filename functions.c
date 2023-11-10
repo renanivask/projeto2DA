@@ -148,3 +148,26 @@ void apagar_cpf(Cliente* clientes, int* numClientes) {
         }
     }
 }
+
+// Opcao 3 - listar clientes
+void listar() {
+    // Abre o arquivo binário para leitura
+    FILE *file = fopen("clients.bin", "rb");
+
+    if (arquivo_escrito("clients.bin") == 0) {
+        printf("Nenhum usuario cadastrado.\n");
+    } else {
+        Cliente cliente;
+
+        while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+            printf("-=-=-=-=-=-=-=-=-=-=-=-\n");
+            printf("Cpf: %s\n", cliente.cpf);
+            printf("Tipo de conta: %c\n", cliente.tipo_conta);
+            printf("Valor em conta: R$%.2lf\n", cliente.saldo);
+            printf("Senha: %s\n", cliente.senha);
+            printf("\n");
+        }
+
+        fclose(file);
+    }
+}
