@@ -21,5 +21,6 @@ int arquivo_escrito(char arquivo[30]);
 
 void novo_cliente(Cliente* clientes, int* numClientes);
 
+void apagar_cpf(Cliente* clientes, int* numClientes);
 
 #endif
