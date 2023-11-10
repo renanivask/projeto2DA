@@ -19,22 +19,8 @@ int confirma_abertura_arquivo(char arquivo[30]);
 
 int arquivo_escrito(char arquivo[30]);
 
-void novo_cliente();
+void novo_cliente(Cliente* clientes, int* numClientes);
 
-void apaga_cliente();
-
-void apagar_cpf();
-
-void listar();
-
-void debito();
-
-void deposito();
-
-void extrato(const char* cpf);
-
-void realizarTransferencia(FILE* arquivo, const char* cnpj_origem, const char* cnpj_destino, double valor);
-
-void debito_automatico();
+void apagar_cpf(Cliente* clientes, int* numClientes);
 
 #endif
