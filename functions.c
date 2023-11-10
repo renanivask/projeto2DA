@@ -150,7 +150,7 @@ void apagar_cpf(Cliente* clientes, int* numClientes) {
 }
 
 // Opcao 3 - listar clientes
-void listar() {
+void listar(void) {
     // Abre o arquivo binário para leitura
     FILE *file = fopen("clients.bin", "rb");
 
