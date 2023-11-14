@@ -20,8 +20,7 @@ int main() {
         printf("\033[1;34m[ 5 ] - Deposito.\n");
         printf("\033[1;35m[ 6 ] - Extrato.\n");
         printf("\033[1;31m[ 7 ] - Transferencia entre contas.\n");
-        printf("\033[1;33m[ 8 ] - Debito automatico.\n");
-        printf("\033[1;32m[ 9 ] - Sair.\n");
+        printf("\033[1;33m[ 8 ] - Sair.\n\033[1;32m");
 
         scanf("%d", &operacao);
 
@@ -59,7 +58,12 @@ int main() {
                   printf("Opcao 5 confirmada!\n");
                   deposito(clientes, &numClientes);  
               } break;
-            case 9:
+            case 6:
+            if (confirmacao(6) == 'S') {
+                printf("Opcao 6 confirmada!\n");
+                extrato(clientes, &numClientes);  
+            } break;
+            case 8:
               printf("Volte Sempre!\n");
               return 0;  
     }

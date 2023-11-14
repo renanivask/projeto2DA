@@ -29,4 +29,6 @@ void debito(Cliente* clientes, int* numClientes);
 
 void deposito(Cliente* clientes, int* numClientes);
 
+void extrato(Cliente* clientes, int* numClientes);
+
 #endif

@@ -357,3 +357,72 @@ void deposito(Cliente* clientes, int* numClientes) {
     printf("Cliente não encontrado no arquivo!\n");
     fclose(file);
 }
+
+
+// Função para realizar um extrato de transações de um cliente
+void extrato(Cliente* clientes, int* numClientes) {
+    char cpf[15];
+    printf("Digite o CPF do cliente: ");
+    scanf("%s", cpf);
+
+    FILE* file = fopen("clients.bin", "rb");
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    Cliente cliente;
+
+    int clienteEncontrado = 0;
+
+    while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
+        if (strcmp(cliente.cpf, cpf) == 0) {
+            clienteEncontrado = 1;
+            break;
+        }
+    }
+
+    fclose(file); // Fecha o arquivo após encontrar o cliente
+
+    if (!clienteEncontrado) {
+        printf("Cliente não encontrado!\n");
+        return;
+    }
+
+    char senha[50];
+    printf("Digite sua senha: ");
+    scanf(" %s", senha);
+
+    // Verifica a senha
+    if (strcmp(cliente.senha, senha) != 0) {
+        printf("Senha incorreta!\n");
+        return;
+    }
+
+    // Cria o título do arquivo de extrato com o CPF do cliente
+    char nomeArquivo[50];
+    sprintf(nomeArquivo, "extrato_%s.txt", cliente.cpf);
+
+    FILE* extratoFile = fopen(nomeArquivo, "a"); // Abre o arquivo em modo de escrita, adicionando ao final
+
+    if (extratoFile == NULL) {
+        printf("Erro ao abrir o arquivo de extrato.\n");
+        return;
+    }
+
+    if (cliente.num_transacoes == 0) {
+        printf("Nenhuma transação encontrada.\n");
+    } else {
+        fprintf(extratoFile, "Extrato para o CPF %s:\n", cliente.cpf);
+        for (int j = 0; j < cliente.num_transacoes; j++) {
+            fprintf(extratoFile, "%s\n", cliente.transacoes[j]);
+        }
+        fprintf(extratoFile, "\n"); // Adiciona uma linha em branco entre os extratos dos clientes
+    }
+
+    fclose(extratoFile);
+
+    // Mensagem de confirmação
+    printf("Extrato gerado com sucesso para o CPF %s. Arquivo: %s\n", cliente.cpf, nomeArquivo);
+}
