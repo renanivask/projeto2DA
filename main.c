@@ -44,12 +44,17 @@ int main() {
                 }
                 break;
             case 3:
-                if (confirmacao(3) == 'S') {
-                    printf("Opcao 3 confirmada!\n");
-                    printf("Lista de clientes:\n");
-                    listar();
-                }
-                break;
+              if (confirmacao(3) == 'S') {
+                  printf("Opcao 3 confirmada!\n");
+                  printf("Lista de clientes:\n");
+                  listar();
+              } break;
+            case 4:
+              if (confirmacao(4) == 'S') {
+                  printf("Opcao 4 confirmada!\n");
+                  debito(clientes, &numClientes);
+              } break;
+
     }
   }
 }
