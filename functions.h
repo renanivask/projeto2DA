@@ -25,4 +25,6 @@ void apagar_cpf(Cliente* clientes, int* numClientes);
 
 void listar(void);
 
+void debito(Cliente* clientes, int* numClientes);
+
 #endif
