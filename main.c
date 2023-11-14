@@ -54,7 +54,14 @@ int main() {
                   printf("Opcao 4 confirmada!\n");
                   debito(clientes, &numClientes);
               } break;
-
+            case 5:
+              if (confirmacao(5) == 'S') {
+                  printf("Opcao 5 confirmada!\n");
+                  deposito(clientes, &numClientes);  
+              } break;
+            case 9:
+              printf("Volte Sempre!\n");
+              return 0;  
     }
   }
 }
