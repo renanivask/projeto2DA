@@ -175,7 +175,7 @@ void listar(void) {
 // Função para realizar um débito na conta de um cliente
 void debito(Cliente* clientes, int* numClientes) {
     char cpf[15];
-    printf("Digite o CPF do cliente: ");
+    printf("Digite o CPF do cliente que deseja realizar o débito: ");
     scanf("%s", cpf);
 
     FILE* file = fopen("clients.bin", "rb+");
@@ -203,7 +203,7 @@ void debito(Cliente* clientes, int* numClientes) {
     }
 
     char senha[50];
-    printf("Digite sua senha: ");
+    printf("Digite a senha: ");
     scanf(" %s", senha);
 
     // Verifica a senha
@@ -274,7 +274,7 @@ void debito(Cliente* clientes, int* numClientes) {
 // Função para realizar um depósito na conta de um cliente
 void deposito(Cliente* clientes, int* numClientes) {
     char cpf[15];
-    printf("Digite o cpf do cliente: ");
+    printf("Digite o CPF do cliente que recebera o deposito: ");
     scanf("%s", cpf);
 
     FILE* file = fopen("clients.bin", "rb+"); // Abre o arquivo em modo de leitura e escrita binária.
@@ -288,17 +288,8 @@ void deposito(Cliente* clientes, int* numClientes) {
 
     while (fread(&cliente, sizeof(Cliente), 1, file) == 1) {
         if (strcmp(cliente.cpf, cpf) == 0) {
-            char senha[50];
-            printf("Digite sua senha: ");
-            scanf(" %s", senha);
-
-            while (strcmp(cliente.senha, senha) != 0) {
-                printf("Senha incorreta. Digite novamente sua senha: ");
-                scanf(" %s", senha);
-            }
-
             double valor_credito;
-            printf("Qual valor você deseja creditar: R$");
+            printf("Digite o valor a ser depositado: R$");
             scanf("%lf", &valor_credito);
 
             double valor = valor_credito;
@@ -425,4 +416,11 @@ void extrato(Cliente* clientes, int* numClientes) {
 
     // Mensagem de confirmação
     printf("Extrato gerado com sucesso para o CPF %s. Arquivo: %s\n", cliente.cpf, nomeArquivo);
+}
+
+
+// Função para realizar transferências entre clientes
+void transferencia(Cliente* clientes, int* numClientes) {
+    debito(clientes, numClientes);
+    deposito(clientes, numClientes);
 }

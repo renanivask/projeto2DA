@@ -9,7 +9,7 @@ typedef struct {
     char tipo_conta;
     double saldo;
     char senha[50];
-    char transacoes[1000][100];
+    char transacoes[100][100];
     int num_transacoes;
 } Cliente;
 
@@ -30,5 +30,7 @@ void debito(Cliente* clientes, int* numClientes);
 void deposito(Cliente* clientes, int* numClientes);
 
 void extrato(Cliente* clientes, int* numClientes);
+
+void transferencia(Cliente* clientes, int* numClientes);
 
 #endif
