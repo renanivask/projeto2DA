@@ -24,4 +24,3 @@ Descrição das principais funções utilizadas para a operação do banco (cont
 
 *realizarTransferencia*: Permite que um cliente realize uma transferência de fundos para outra conta. O cliente fornece o CPF da conta de origem, a conta de destino e o valor. A função cuida de verificar a senha, o saldo e as taxas de transferência.
 
-*debito_automatico*: Agendamento de débito automático para um cliente. O cliente fornece o valor e o dia do mês em que o débito será efetuado. A função verifica a senha, o limite da conta e agenda a transação.
