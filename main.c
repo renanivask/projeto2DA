@@ -59,10 +59,15 @@ int main() {
                   deposito(clientes, &numClientes);  
               } break;
             case 6:
-            if (confirmacao(6) == 'S') {
-                printf("Opcao 6 confirmada!\n");
-                extrato(clientes, &numClientes);  
-            } break;
+              if (confirmacao(6) == 'S') {
+                  printf("Opcao 6 confirmada!\n");
+                  extrato(clientes, &numClientes);  
+              } break;
+            case 7:
+              if (confirmacao(7) == 'S') {
+                printf("Opcao 7 confirmada!\n");
+                transferencia(clientes, &numClientes);
+              } break;
             case 8:
               printf("Volte Sempre!\n");
               return 0;  
